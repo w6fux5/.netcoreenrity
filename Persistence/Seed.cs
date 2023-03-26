@@ -1,12 +1,44 @@
 using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context)
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
-            if (context.Activities.Any())
+            if (!userManager.Users.Any())
+            {
+                var users = new List<AppUser>
+                {
+                    new AppUser
+                    {
+                        DisplayName = "Bob",
+                        UserName = "bob",
+                        Email = "bob@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Tom",
+                        UserName = "tom",
+                        Email = "tom@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Jane",
+                        UserName = "jane",
+                        Email = "jane@test.com"
+                    }
+                };
+
+                //創建密碼
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
+                }
+            }
+
+            if (context.Tbl_Activity.Any())
                 return;
 
             var activities = new List<Activity>
@@ -103,7 +135,7 @@ namespace Persistence
                 }
             };
 
-            await context.Activities.AddRangeAsync(activities); // 保存在記憶體
+            await context.Tbl_Activity.AddRangeAsync(activities); // 保存在記憶體
             await context.SaveChangesAsync(); // 實際操作數據庫
         }
     }

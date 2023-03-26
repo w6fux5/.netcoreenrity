@@ -24,7 +24,7 @@ namespace Application.Activities
                 CancellationToken cancellationToken
             )
             {
-                List<Activity> activityList = await _context.Activities.ToListAsync();
+                List<Activity> activityList = await _context.Tbl_Activity.ToListAsync();
 
                 return Result<List<Activity>>.Success(activityList);
             }

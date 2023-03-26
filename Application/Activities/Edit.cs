@@ -38,7 +38,7 @@ namespace Application.Activities
                 CancellationToken cancellationToken
             )
             {
-                Activity activity = await _context.Activities.FindAsync(request.Activity.Id);
+                Activity activity = await _context.Tbl_Activity.FindAsync(request.Activity.Id);
 
                 if (activity == null)
                     return Result<Unit>.Failure("activity not found", 2);

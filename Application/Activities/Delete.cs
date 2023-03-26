@@ -26,7 +26,7 @@ namespace Application.Activities
                 CancellationToken cancellationToken
             )
             {
-                Activity activity = await _context.Activities.FindAsync(request.Id);
+                Activity activity = await _context.Tbl_Activity.FindAsync(request.Id);
 
                 if (activity == null)
                     return Result<Unit>.Failure($"failed to delete activity,  ID: {request.Id}", 2);

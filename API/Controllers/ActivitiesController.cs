@@ -12,14 +12,15 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetActivities(CancellationToken ct)
         {
-            Result<List<Activity>> result = await Mediator.Send(new List.Query());
+            var result = await Mediator.Send(new List.Query());
+
             return HandleResult(result);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetActivity(Guid id)
         {
-            Result<Activity> result = await Mediator.Send(new Details.Query { Id = id });
+            var result = await Mediator.Send(new Details.Query { Id = id });
             return HandleResult(result);
         }
 
@@ -30,6 +31,7 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
+        [Authorize(Policy = "IsActivityHost")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditActivity(Guid id, Activity activity)
         {
@@ -43,6 +45,12 @@ namespace API.Controllers
         {
             Result<Unit> result = await Mediator.Send(new Delete.Command { Id = id });
             return HandleResult(result);
+        }
+
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(Guid id)
+        {
+            return HandleResult(await Mediator.Send(new UpdateAttendance.Command { Id = id }));
         }
     }
 }

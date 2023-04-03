@@ -9,7 +9,7 @@ using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 所有controller 都要驗證tok3n
+// 所有controller 都要驗證token
 builder.Services.AddControllers(opt =>
 {
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

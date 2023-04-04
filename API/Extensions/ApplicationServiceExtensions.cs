@@ -6,6 +6,7 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Photo;
 using Infrastructure.Security;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -36,6 +37,7 @@ namespace API.Extensions
                         policy
                             .AllowAnyHeader()
                             .AllowAnyMethod()
+                            .AllowCredentials()
                             .WithOrigins("http://localhost:3000");
                     }
                 );
@@ -52,6 +54,8 @@ namespace API.Extensions
 
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+
+            services.AddSignalR();
 
             return services;
         }
